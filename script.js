@@ -1,12 +1,64 @@
+const horizontal = document.querySelector(".horizontal");
+const track = document.querySelector(".track");
+
+
+
+function moveShowcase() {
+
+    const sectionTop = horizontal.getBoundingClientRect().top;
+
+    const sectionHeight =
+        horizontal.offsetHeight - window.innerHeight;
+
+
+    let progress =
+        -sectionTop / sectionHeight;
+
+
+    progress = Math.max(
+        0,
+        Math.min(1, progress)
+    );
+
+
+    const maxMove =
+        track.scrollWidth - window.innerWidth;
+
+
+    track.style.transform =
+        `translateX(${-progress * maxMove}px)`;
+
+}
+
+
+
+window.addEventListener(
+    "scroll",
+    moveShowcase
+);
+
+
+
+window.addEventListener(
+    "resize",
+    moveShowcase
+);
+
+
+moveShowcase();
+
+
+
+
+
+// Header background change
+
 const header = document.querySelector("header");
-const heroImage = document.querySelector(".hero img");
 
-
-// Navigation background change
 
 window.addEventListener("scroll", () => {
 
-    if (window.scrollY > 80) {
+    if (window.scrollY > 100) {
 
         header.style.background =
         "rgba(0,0,0,0.85)";
@@ -17,7 +69,7 @@ window.addEventListener("scroll", () => {
     } else {
 
         header.style.background =
-        "linear-gradient(rgba(0,0,0,0.7), transparent)";
+        "linear-gradient(rgba(0,0,0,0.5),transparent)";
 
         header.style.backdropFilter =
         "none";
@@ -29,29 +81,42 @@ window.addEventListener("scroll", () => {
 
 
 
-// Smooth scrolling
 
-document.querySelectorAll("a[href^='#']").forEach(link => {
-
-    link.addEventListener("click", e => {
-
-        e.preventDefault();
-
-        const target =
-        document.querySelector(
-            link.getAttribute("href")
-        );
+// Smooth scrolling for navigation
 
 
-        if (target) {
+document.querySelectorAll(
+    "a[href^='#']"
+)
+.forEach(link => {
 
-            target.scrollIntoView({
-                behavior: "smooth"
-            });
+
+    link.addEventListener(
+        "click",
+        function(event) {
+
+
+            event.preventDefault();
+
+
+            const target =
+            document.querySelector(
+                this.getAttribute("href")
+            );
+
+
+            if(target){
+
+                target.scrollIntoView({
+                    behavior:"smooth"
+                });
+
+            }
+
 
         }
+    );
 
-    });
 
 });
 
@@ -59,98 +124,54 @@ document.querySelectorAll("a[href^='#']").forEach(link => {
 
 
 
-// Hero parallax effect
+// Fade-in animations
 
-window.addEventListener("scroll", () => {
-
-    if (heroImage) {
-
-        const movement =
-        window.scrollY * 0.15;
-
-
-        heroImage.style.transform =
-        `scale(1.08) translateY(${movement}px)`;
-
-    }
-
-});
-
-
-
-
-
-// Reveal animations
 
 const revealElements =
 document.querySelectorAll(
-    ".story-content, .story-image, .spec-grid div, .driver, .full-section div, .performance div, .closing div"
+    ".intro-text, .intro img, .team-grid div"
 );
 
 
 
 const observer =
 new IntersectionObserver(
-(entries) => {
+(entries)=>{
 
-    entries.forEach(entry => {
 
-        if (entry.isIntersecting) {
+    entries.forEach(entry=>{
 
-            entry.target.classList.add("visible");
+
+        if(entry.isIntersecting){
+
+
+            entry.target.classList.add(
+                "show"
+            );
+
 
         }
+
 
     });
 
+
 },
 {
-    threshold: 0.2
+    threshold:0.2
 });
 
 
 
-revealElements.forEach(element => {
+revealElements.forEach(element=>{
 
-    element.classList.add("hidden");
+
+    element.classList.add(
+        "hidden"
+    );
+
 
     observer.observe(element);
-
-});
-
-
-
-
-
-// Driver image interaction
-
-const drivers =
-document.querySelectorAll(".driver");
-
-
-drivers.forEach(driver => {
-
-
-    driver.addEventListener(
-        "mouseenter",
-        () => {
-
-            driver.style.transform =
-            "translateY(-15px)";
-
-        }
-    );
-
-
-    driver.addEventListener(
-        "mouseleave",
-        () => {
-
-            driver.style.transform =
-            "translateY(0)";
-
-        }
-    );
 
 
 });
