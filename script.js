@@ -1,19 +1,54 @@
-// Smooth scrolling for navigation links
+const header = document.querySelector("header");
+const heroImage = document.querySelector(".hero img");
 
-document.querySelectorAll('a[href^="#"]').forEach(link => {
 
-    link.addEventListener("click", function(e) {
+// Navigation background change
+
+window.addEventListener("scroll", () => {
+
+    if (window.scrollY > 80) {
+
+        header.style.background =
+        "rgba(0,0,0,0.85)";
+
+        header.style.backdropFilter =
+        "blur(12px)";
+
+    } else {
+
+        header.style.background =
+        "linear-gradient(rgba(0,0,0,0.7), transparent)";
+
+        header.style.backdropFilter =
+        "none";
+
+    }
+
+});
+
+
+
+
+// Smooth scrolling
+
+document.querySelectorAll("a[href^='#']").forEach(link => {
+
+    link.addEventListener("click", e => {
 
         e.preventDefault();
 
-        const target = document.querySelector(
-            this.getAttribute("href")
+        const target =
+        document.querySelector(
+            link.getAttribute("href")
         );
 
+
         if (target) {
+
             target.scrollIntoView({
                 behavior: "smooth"
             });
+
         }
 
     });
@@ -21,106 +56,101 @@ document.querySelectorAll('a[href^="#"]').forEach(link => {
 });
 
 
-// Fade-in animation observer
 
-const sections = document.querySelectorAll(
-    ".section, .closing-content"
-);
-
-
-const observer = new IntersectionObserver(
-    entries => {
-
-        entries.forEach(entry => {
-
-            if (entry.isIntersecting) {
-
-                entry.target.classList.add("show");
-
-            }
-
-        });
-
-    },
-    {
-        threshold: 0.15
-    }
-);
-
-
-sections.forEach(section => {
-
-    observer.observe(section);
-
-});
-
-
-// Navigation background change on scroll
-
-const nav = document.querySelector("nav");
-
-
-window.addEventListener("scroll", () => {
-
-    if (window.scrollY > 80) {
-
-        nav.style.background =
-        "rgba(0,0,0,0.85)";
-
-    } else {
-
-        nav.style.background =
-        "rgba(0,0,0,0.35)";
-
-    }
-
-});
 
 
 // Hero parallax effect
 
-const heroImage = document.querySelector(".hero-image");
-
-
 window.addEventListener("scroll", () => {
-
-    const offset = window.scrollY * 0.25;
 
     if (heroImage) {
 
+        const movement =
+        window.scrollY * 0.15;
+
+
         heroImage.style.transform =
-        `translateY(${offset}px) scale(1.05)`;
+        `scale(1.08) translateY(${movement}px)`;
 
     }
 
 });
 
 
-// Driver card hover effect
 
-const drivers = document.querySelectorAll(
-    ".driver-card"
+
+
+// Reveal animations
+
+const revealElements =
+document.querySelectorAll(
+    ".story-content, .story-image, .spec-grid div, .driver, .full-section div, .performance div, .closing div"
 );
+
+
+
+const observer =
+new IntersectionObserver(
+(entries) => {
+
+    entries.forEach(entry => {
+
+        if (entry.isIntersecting) {
+
+            entry.target.classList.add("visible");
+
+        }
+
+    });
+
+},
+{
+    threshold: 0.2
+});
+
+
+
+revealElements.forEach(element => {
+
+    element.classList.add("hidden");
+
+    observer.observe(element);
+
+});
+
+
+
+
+
+// Driver image interaction
+
+const drivers =
+document.querySelectorAll(".driver");
 
 
 drivers.forEach(driver => {
 
-    driver.addEventListener("mouseenter", () => {
 
-        driver.style.transform =
-        "translateY(-15px)";
+    driver.addEventListener(
+        "mouseenter",
+        () => {
 
-        driver.style.transition =
-        "0.3s";
+            driver.style.transform =
+            "translateY(-15px)";
 
-    });
+        }
+    );
 
 
-    driver.addEventListener("mouseleave", () => {
+    driver.addEventListener(
+        "mouseleave",
+        () => {
 
-        driver.style.transform =
-        "translateY(0)";
+            driver.style.transform =
+            "translateY(0)";
 
-    });
+        }
+    );
+
 
 });
